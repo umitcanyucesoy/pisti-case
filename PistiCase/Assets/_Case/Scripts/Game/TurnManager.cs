@@ -30,8 +30,9 @@ namespace _Case.Scripts.Game
             Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
             if (bot != null && bot.myCards.Count > 0)
             {
+                // Botun elindeki ilk kartı otomatik oynatırken, automated parametresini true olarak gönderiyoruz.
                 Card botCard = bot.myCards[0];
-                TableManager.Instance.PlayCard(botCard.gameObject);
+                TableManager.Instance.PlayCard(botCard.gameObject, true);
             }
         }
         

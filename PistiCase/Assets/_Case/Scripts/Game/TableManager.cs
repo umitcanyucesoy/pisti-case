@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Players;
@@ -20,6 +21,8 @@ namespace _Case.Scripts.Game
         public CardManager cardManager;
         public Sprite botCardBackSprite;
         public float moveDuration = .5f;
+        
+        private bool isClearing = false;
         
         public static TableManager Instance { get; private set; }
 
@@ -44,22 +47,43 @@ namespace _Case.Scripts.Game
             CreateTableCard(deckSlot, botCardBackSprite, 0);
         }
 
+        private void Update()
+        {
+            if (openCardSlot && !isClearing && openCardSlot.childCount == 0)
+            {
+                if (cardManager && cardManager.CardPool.Count > 0)
+                {
+                    CreateTableCard(openCardSlot, null, 0);
+                }
+            }
+        }
+
         private void CreateTableCard(Transform slot, Sprite sprite, float rotation)
         {
             if (cardManager != null && cardManager.CardPool.Count > 0 && slot != null)
             {
                 Card card = cardManager.CardPool.Pop();
         
-                // Eğer slot openCardSlot ise => isTableCard = false, aksi halde true
+                // Eğer slot openCardSlot ise; kart oyuncunun oynayacağı kart (open card)
                 if (slot == openCardSlot)
                 {
                     card.isTableCard = false; 
-                    // Bu kartı “oynanan kartlar” listesine de ekle
                     playedCards.Add(card);
+                    // Açık kart slotundaki kartlara yüksek bir sortingOrder verelim.
+                    if (card.cardDisplay != null && card.cardDisplay.spriteRenderer != null)
+                    {
+                        card.cardDisplay.spriteRenderer.sortingOrder = 100;
+                    }
                 }
                 else
                 {
+                    // Diğer slotlardaki (kapalı slotlar ve deste) kartlar table kartı olsun.
                     card.isTableCard = true;
+                    // Kapalı slotlardaki kartların sortingOrder değerini düşük tutalım.
+                    if (card.cardDisplay != null && card.cardDisplay.spriteRenderer != null)
+                    {
+                        card.cardDisplay.spriteRenderer.sortingOrder = 10;
+                    }
                 }
 
                 card.transform.SetParent(slot, false);
@@ -67,18 +91,28 @@ namespace _Case.Scripts.Game
                 card.transform.localRotation = Quaternion.Euler(0, 0, rotation);
 
                 Collider collider = card.GetComponent<Collider>();
-                if (collider != null) collider.enabled = false;
+                if (collider != null)
+                    collider.enabled = false;
 
                 if (card.cardDisplay != null)
                 {
-                    if (sprite != null) card.cardDisplay.spriteRenderer.sprite = sprite;
-                    else card.cardDisplay.UpdateDisplay();
+                    if (sprite != null)
+                        card.cardDisplay.spriteRenderer.sprite = sprite;
+                    else
+                        card.cardDisplay.UpdateDisplay();
                 }
             }
         }
+
         
-        public void PlayCard(GameObject cardObj)
+        public void PlayCard(GameObject cardObj, bool automated = false)
         {
+            if (isClearing)
+            {
+                Debug.Log("Clear animasyonu devam ediyor, kart oynanamaz.");
+                return;
+            }
+                    
             Card card = cardObj.GetComponent<Card>();
             if (card == null) return;
             if (card.isTableCard) return;
@@ -90,20 +124,23 @@ namespace _Case.Scripts.Game
                 if (owner == null) return;
             }
 
+            // Eğer sıra player'da değilse, player kartları oynanamaz.
             if (!owner.isBot && !TurnManager.Instance.isPlayerTurn)
             {
                 Debug.Log("Sıra player'da değil, oynamaz.");
                 return;
             }
+            // Eğer sıra bot'ta değilse, bot kartları oynanamaz.
             if (owner.isBot && TurnManager.Instance.isPlayerTurn)
             {
                 Debug.Log("Sıra bot'ta değil, oynamaz.");
                 return;
             }
 
-            if (!owner.isBot && card.cardDisplay != null && card.cardDisplay.spriteRenderer.sprite == botCardBackSprite)
+            // Manuel (automated=false) olarak bot kartına dokunuluyorsa, işlem iptal edilsin.
+            if (owner.isBot && !automated)
             {
-                Debug.Log("Bu kart bot'a ait, player oynayamaz!");
+                Debug.Log("Bot kartları otomatik oynanıyor, elle oynanamaz.");
                 return;
             }
 
@@ -119,13 +156,13 @@ namespace _Case.Scripts.Game
 
             Vector3 originalWorldScale = cardObj.transform.lossyScale;
             cardObj.transform.SetParent(null, true);
-            
+                    
             BoxCollider2D col = cardObj.GetComponent<BoxCollider2D>();
             if (col != null)
             {
                 col.enabled = false;
             }
-            
+                    
             Sequence seq = DOTween.Sequence();
             seq.Join(
                 cardObj.transform.DOMove(openCardSlot.position, moveDuration)
@@ -169,6 +206,7 @@ namespace _Case.Scripts.Game
                 }
             });
         }
+            
 
         private void AddPlayedCard(Card card, Player owner)
         {
@@ -198,6 +236,7 @@ namespace _Case.Scripts.Game
         
                 if (lastCard.cardData.Value == prevCard.cardData.Value)
                 {
+                    isClearing = true;
                     ClearOpenSlot(owner);
                 }
             }
@@ -238,6 +277,7 @@ namespace _Case.Scripts.Game
                     c.gameObject.SetActive(false);
                 }
                 playedCards.Clear();
+                isClearing = false;
             });
         }
     }
