@@ -13,6 +13,7 @@ namespace _Case.Scripts.Game
         public Transform closedCardSlot2;
         public Transform openCardSlot;
         public Transform deckSlot;
+        public Transform matchslot;
 
         [Header("----- Deck Slots -----")] 
         public List<Card> playedCards;
@@ -48,20 +49,30 @@ namespace _Case.Scripts.Game
             if (cardManager != null && cardManager.CardPool.Count > 0 && slot != null)
             {
                 Card card = cardManager.CardPool.Pop();
-                card.isTableCard = true;
+        
+                // Eğer slot openCardSlot ise => isTableCard = false, aksi halde true
+                if (slot == openCardSlot)
+                {
+                    card.isTableCard = false; 
+                    // Bu kartı “oynanan kartlar” listesine de ekle
+                    playedCards.Add(card);
+                }
+                else
+                {
+                    card.isTableCard = true;
+                }
+
                 card.transform.SetParent(slot, false);
                 card.transform.localPosition = Vector3.zero;
                 card.transform.localRotation = Quaternion.Euler(0, 0, rotation);
 
                 Collider collider = card.GetComponent<Collider>();
-                if (collider != null)
-                {
-                    collider.enabled = false;
-                }
+                if (collider != null) collider.enabled = false;
 
-                if (sprite != null && card.cardDisplay != null)
+                if (card.cardDisplay != null)
                 {
-                    card.cardDisplay.spriteRenderer.sprite = sprite;
+                    if (sprite != null) card.cardDisplay.spriteRenderer.sprite = sprite;
+                    else card.cardDisplay.UpdateDisplay();
                 }
             }
         }
@@ -108,7 +119,13 @@ namespace _Case.Scripts.Game
 
             Vector3 originalWorldScale = cardObj.transform.lossyScale;
             cardObj.transform.SetParent(null, true);
-
+            
+            BoxCollider2D col = cardObj.GetComponent<BoxCollider2D>();
+            if (col != null)
+            {
+                col.enabled = false;
+            }
+            
             Sequence seq = DOTween.Sequence();
             seq.Join(
                 cardObj.transform.DOMove(openCardSlot.position, moveDuration)
@@ -138,12 +155,6 @@ namespace _Case.Scripts.Game
                     originalWorldScale.y / parentWorldScale.y,
                     originalWorldScale.z / parentWorldScale.z
                 );
-
-                Collider col = cardObj.GetComponent<Collider>();
-                if (col != null)
-                {
-                    col.enabled = false;
-                }
 
                 AddPlayedCard(card, owner);
 
@@ -182,15 +193,11 @@ namespace _Case.Scripts.Game
             
             if (playedCards.Count >= 2)
             {
-                // Son eklenen (en üstteki) kart:
                 Card lastCard = playedCards[playedCards.Count - 1];
-                // Bir önceki kart:
                 Card prevCard = playedCards[playedCards.Count - 2];
         
-                // Value'ları eşitse -> yok et
                 if (lastCard.cardData.Value == prevCard.cardData.Value)
                 {
-                    // Yok etme animasyonu + score artışı:
                     ClearOpenSlot(owner);
                 }
             }
@@ -198,23 +205,35 @@ namespace _Case.Scripts.Game
         
         private void ClearOpenSlot(Player whoCleared)
         {
-            // 1) Skoru artır
             whoCleared.score++;
             Debug.Log($"{whoCleared.name} skor kazandı! Yeni skor: {whoCleared.score}");
 
-            // 2) Tüm kartlara küçük bir vanish animasyonu uygula (deckSlot'a uçurmak vs.)
             Sequence vanishSeq = DOTween.Sequence();
 
-            foreach (Card c in playedCards)
+            List<Card> vanishCards = new List<Card>();
+
+            vanishCards.AddRange(playedCards);
+
+            Card closed1 = closedCardSlot1.GetComponentInChildren<Card>();
+            if (closed1 != null)
+                vanishCards.Add(closed1);
+
+            Card closed2 = closedCardSlot2.GetComponentInChildren<Card>();
+            if (closed2 != null)
+                vanishCards.Add(closed2);
+
+            float yOffset = 0.2f; 
+            for (int i = 0; i < vanishCards.Count; i++)
             {
-                // Örnek: 0.3 saniyede deckSlot konumuna uçsunlar
-                vanishSeq.Join(c.transform.DOMove(deckSlot.position, 0.3f));
+                Vector3 targetPosition = matchslot.position + new Vector3(0, yOffset * i, 0);
+                vanishSeq.Join(
+                    vanishCards[i].transform.DOMove(targetPosition, 0.6f).SetEase(Ease.InOutQuad)
+                );
             }
 
-            // 3) Animasyon bittiğinde kartları SetActive(false) ve listeyi temizle
             vanishSeq.OnComplete(() =>
             {
-                foreach (Card c in playedCards)
+                foreach (Card c in vanishCards)
                 {
                     c.gameObject.SetActive(false);
                 }

@@ -38,7 +38,6 @@ namespace _Case.Scripts.Cards
                 card.cardDisplay.UpdateDisplay();
                 card.name = $"Card {currentType} {value:00}";
 
-                // --- listeye ekle ---
                 cardManager.cardList.Add(card);
             }
         }
