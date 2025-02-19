@@ -54,4 +54,9 @@ public class SalonPanelSwitcher : MonoBehaviour
 
         _currentTween = panelContainer.DOAnchorPosX(targetX, tweenDuration).SetEase(Ease.OutCubic);
     }
+    
+    public int GetCurrentPanelIndex()
+    {
+        return _currentPanelIndex;
+    }
 }

@@ -64,12 +64,10 @@ namespace _Case.Scripts.Game
             {
                 Card card = cardManager.CardPool.Pop();
         
-                // Eğer slot openCardSlot ise; kart oyuncunun oynayacağı kart (open card)
                 if (slot == openCardSlot)
                 {
                     card.isTableCard = false; 
                     playedCards.Add(card);
-                    // Açık kart slotundaki kartlara yüksek bir sortingOrder verelim.
                     if (card.cardDisplay != null && card.cardDisplay.spriteRenderer != null)
                     {
                         card.cardDisplay.spriteRenderer.sortingOrder = 100;
@@ -77,9 +75,7 @@ namespace _Case.Scripts.Game
                 }
                 else
                 {
-                    // Diğer slotlardaki (kapalı slotlar ve deste) kartlar table kartı olsun.
                     card.isTableCard = true;
-                    // Kapalı slotlardaki kartların sortingOrder değerini düşük tutalım.
                     if (card.cardDisplay != null && card.cardDisplay.spriteRenderer != null)
                     {
                         card.cardDisplay.spriteRenderer.sortingOrder = 10;
@@ -124,20 +120,17 @@ namespace _Case.Scripts.Game
                 if (owner == null) return;
             }
 
-            // Eğer sıra player'da değilse, player kartları oynanamaz.
             if (!owner.isBot && !TurnManager.Instance.isPlayerTurn)
             {
                 Debug.Log("Sıra player'da değil, oynamaz.");
                 return;
             }
-            // Eğer sıra bot'ta değilse, bot kartları oynanamaz.
             if (owner.isBot && TurnManager.Instance.isPlayerTurn)
             {
                 Debug.Log("Sıra bot'ta değil, oynamaz.");
                 return;
             }
 
-            // Manuel (automated=false) olarak bot kartına dokunuluyorsa, işlem iptal edilsin.
             if (owner.isBot && !automated)
             {
                 Debug.Log("Bot kartları otomatik oynanıyor, elle oynanamaz.");
