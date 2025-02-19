@@ -15,6 +15,7 @@ namespace _Case.Scripts.Players
         [Header("----- Player Elements -----")]
         public Transform handContainer;
         public bool isBot = false;
+        public int score = 0;
 
         public void TakeCard(Card card)
         {

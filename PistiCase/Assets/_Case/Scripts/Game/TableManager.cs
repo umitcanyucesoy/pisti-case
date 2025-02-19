@@ -179,6 +179,47 @@ namespace _Case.Scripts.Game
                     PlayerManager.Instance.GiveCard(4);
                 }
             }
+            
+            if (playedCards.Count >= 2)
+            {
+                // Son eklenen (en üstteki) kart:
+                Card lastCard = playedCards[playedCards.Count - 1];
+                // Bir önceki kart:
+                Card prevCard = playedCards[playedCards.Count - 2];
+        
+                // Value'ları eşitse -> yok et
+                if (lastCard.cardData.Value == prevCard.cardData.Value)
+                {
+                    // Yok etme animasyonu + score artışı:
+                    ClearOpenSlot(owner);
+                }
+            }
+        }
+        
+        private void ClearOpenSlot(Player whoCleared)
+        {
+            // 1) Skoru artır
+            whoCleared.score++;
+            Debug.Log($"{whoCleared.name} skor kazandı! Yeni skor: {whoCleared.score}");
+
+            // 2) Tüm kartlara küçük bir vanish animasyonu uygula (deckSlot'a uçurmak vs.)
+            Sequence vanishSeq = DOTween.Sequence();
+
+            foreach (Card c in playedCards)
+            {
+                // Örnek: 0.3 saniyede deckSlot konumuna uçsunlar
+                vanishSeq.Join(c.transform.DOMove(deckSlot.position, 0.3f));
+            }
+
+            // 3) Animasyon bittiğinde kartları SetActive(false) ve listeyi temizle
+            vanishSeq.OnComplete(() =>
+            {
+                foreach (Card c in playedCards)
+                {
+                    c.gameObject.SetActive(false);
+                }
+                playedCards.Clear();
+            });
         }
     }
 }
