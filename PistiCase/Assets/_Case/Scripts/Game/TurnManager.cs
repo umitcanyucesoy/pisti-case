@@ -33,8 +33,6 @@ namespace _Case.Scripts.Game
                 Card botCard = bot.myCards[0];
                 TableManager.Instance.PlayCard(botCard.gameObject);
             }
-            
-            isPlayerTurn = true;
         }
         
         public void OnBotCardFinished()

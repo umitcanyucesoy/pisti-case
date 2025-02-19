@@ -149,6 +149,7 @@ namespace _Case.Scripts.Game
 
                 if (!owner.isBot)
                 {
+                    TurnManager.Instance.isPlayerTurn = true;
                     TurnManager.Instance.OnPlayerCardPlayed();
                 }
                 else
