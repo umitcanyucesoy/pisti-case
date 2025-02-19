@@ -21,6 +21,8 @@ namespace _Case.Scripts.Players
             if (card.isTableCard)
                 return;
 
+            card.owner = this;
+
             myCards.Add(card);
             card.transform.SetParent(handContainer, false);
             card.transform.localScale = Vector3.one;

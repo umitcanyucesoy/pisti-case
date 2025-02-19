@@ -18,6 +18,21 @@ namespace _Case.Scripts.Players
             else
                 Destroy(gameObject);
         }
+        
+        public void SetPlayerHandColliders(bool enable)
+        {
+            Player user = players.Find(p => !p.isBot);
+            if (user == null) return;
+
+            foreach (Card card in user.myCards)
+            {
+                Collider coll = card.GetComponent<Collider>();
+                if (coll != null)
+                {
+                    coll.enabled = enable;
+                }
+            }
+        }
 
         public void GiveCard(int amount)
         {

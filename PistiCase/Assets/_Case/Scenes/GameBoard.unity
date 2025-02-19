@@ -166,6 +166,7 @@ GameObject:
   - component: {fileID: 46502044}
   - component: {fileID: 46502043}
   - component: {fileID: 46502045}
+  - component: {fileID: 46502046}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -335,6 +336,20 @@ MonoBehaviour:
   players:
   - {fileID: 2044029857}
   - {fileID: 1100884236}
+--- !u!114 &46502046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 46502041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7994d12fdb2e441da1d6afe3556b3cfb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  botPlayDelay: 1
+  isPlayerTurn: 1
 --- !u!1 &54850619
 GameObject:
   m_ObjectHideFlags: 0
@@ -443,6 +458,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 54850622}
+  isTableCard: 0
 --- !u!212 &54850624
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -603,6 +619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 89787751}
+  isTableCard: 0
 --- !u!212 &89787753
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -763,6 +780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 128118925}
+  isTableCard: 0
 --- !u!212 &128118927
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -923,6 +941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 133870141}
+  isTableCard: 0
 --- !u!212 &133870143
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1083,6 +1102,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 135091669}
+  isTableCard: 0
 --- !u!212 &135091671
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1243,6 +1263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 196254197}
+  isTableCard: 0
 --- !u!212 &196254199
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1403,6 +1424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 202937870}
+  isTableCard: 0
 --- !u!212 &202937872
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1563,6 +1585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 217199190}
+  isTableCard: 0
 --- !u!212 &217199192
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1723,6 +1746,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 267732064}
+  isTableCard: 0
 --- !u!212 &267732066
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1914,6 +1938,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 328480368}
+  isTableCard: 0
 --- !u!212 &328480370
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2074,6 +2099,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 360456931}
+  isTableCard: 0
 --- !u!212 &360456933
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2234,6 +2260,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 368999708}
+  isTableCard: 0
 --- !u!212 &368999710
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2394,6 +2421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 435217624}
+  isTableCard: 0
 --- !u!212 &435217626
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2554,6 +2582,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 439909083}
+  isTableCard: 0
 --- !u!212 &439909085
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2714,6 +2743,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 495742669}
+  isTableCard: 0
 --- !u!212 &495742671
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3011,6 +3041,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 554601084}
+  isTableCard: 0
 --- !u!212 &554601086
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3171,6 +3202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 569796051}
+  isTableCard: 0
 --- !u!212 &569796053
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3413,6 +3445,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 635544174}
+  isTableCard: 0
 --- !u!212 &635544176
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3573,6 +3606,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 698959966}
+  isTableCard: 0
 --- !u!212 &698959968
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3733,6 +3767,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 727052576}
+  isTableCard: 0
 --- !u!212 &727052578
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3961,6 +3996,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 739204584}
+  isTableCard: 0
 --- !u!212 &739204586
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4177,6 +4213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 810066188}
+  isTableCard: 0
 --- !u!212 &810066190
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4337,6 +4374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 857112455}
+  isTableCard: 0
 --- !u!212 &857112457
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4497,6 +4535,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 915437009}
+  isTableCard: 0
 --- !u!212 &915437011
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4657,6 +4696,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 996372574}
+  isTableCard: 0
 --- !u!212 &996372576
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4817,6 +4857,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1032724753}
+  isTableCard: 0
 --- !u!212 &1032724755
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4977,6 +5018,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1047895092}
+  isTableCard: 0
 --- !u!212 &1047895094
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5038,6 +5080,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1080784832}
+  - component: {fileID: 1080784833}
   m_Layer: 0
   m_Name: PlayerHand
   m_TagString: Untagged
@@ -5060,6 +5103,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1080784833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1080784831}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91c1b2202e4798a0d196c4dba6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCards: []
+  spacing: 1
+  cardWidth: 1.2
+  handContainer: {fileID: 1080784832}
+  isBot: 0
 --- !u!1 &1094817041
 GameObject:
   m_ObjectHideFlags: 0
@@ -5168,6 +5228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1094817044}
+  isTableCard: 0
 --- !u!212 &1094817046
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5236,7 +5297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1100884236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5377,6 +5438,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1116140950}
+  isTableCard: 0
 --- !u!212 &1116140952
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5537,6 +5599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1146617541}
+  isTableCard: 0
 --- !u!212 &1146617543
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5697,6 +5760,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1176149374}
+  isTableCard: 0
 --- !u!212 &1176149376
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5857,6 +5921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1179201051}
+  isTableCard: 0
 --- !u!212 &1179201053
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6017,6 +6082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1263945410}
+  isTableCard: 0
 --- !u!212 &1263945412
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6177,6 +6243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1265116964}
+  isTableCard: 0
 --- !u!212 &1265116966
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6238,6 +6305,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1309838151}
+  - component: {fileID: 1309838152}
   m_Layer: 0
   m_Name: BotHand
   m_TagString: Untagged
@@ -6260,6 +6328,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1309838152
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1309838150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91c1b2202e4798a0d196c4dba6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCards: []
+  spacing: 1
+  cardWidth: 1.2
+  handContainer: {fileID: 1309838151}
+  isBot: 1
 --- !u!1 &1388963113
 GameObject:
   m_ObjectHideFlags: 0
@@ -6368,6 +6453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1388963116}
+  isTableCard: 0
 --- !u!212 &1388963118
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6611,6 +6697,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1521403212}
+  isTableCard: 0
 --- !u!212 &1521403214
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6771,6 +6858,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1551590632}
+  isTableCard: 0
 --- !u!212 &1551590634
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -6931,6 +7019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1615583475}
+  isTableCard: 0
 --- !u!212 &1615583477
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7091,6 +7180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1621556301}
+  isTableCard: 0
 --- !u!212 &1621556303
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7251,6 +7341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1648866355}
+  isTableCard: 0
 --- !u!212 &1648866357
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7411,6 +7502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1648976739}
+  isTableCard: 0
 --- !u!212 &1648976741
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7571,6 +7663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1651618850}
+  isTableCard: 0
 --- !u!212 &1651618852
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7731,6 +7824,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1713273983}
+  isTableCard: 0
 --- !u!212 &1713273985
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -7891,6 +7985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1732428990}
+  isTableCard: 0
 --- !u!212 &1732428992
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8051,6 +8146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1771799979}
+  isTableCard: 0
 --- !u!212 &1771799981
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8211,6 +8307,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1804703673}
+  isTableCard: 0
 --- !u!212 &1804703675
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8402,6 +8499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1847861389}
+  isTableCard: 0
 --- !u!212 &1847861391
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8562,6 +8660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1890241306}
+  isTableCard: 0
 --- !u!212 &1890241308
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8722,6 +8821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1924611041}
+  isTableCard: 0
 --- !u!212 &1924611043
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -8882,6 +8982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1955588828}
+  isTableCard: 0
 --- !u!212 &1955588830
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9042,6 +9143,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1977916288}
+  isTableCard: 0
 --- !u!212 &1977916290
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9202,6 +9304,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 1995233091}
+  isTableCard: 0
 --- !u!212 &1995233093
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -9301,7 +9404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2044029856
 Transform:
   m_ObjectHideFlags: 0

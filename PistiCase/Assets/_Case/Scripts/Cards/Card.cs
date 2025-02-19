@@ -10,6 +10,7 @@ namespace _Case.Scripts.Cards
         public CardData cardData;
         public CardDisplay cardDisplay;
         public bool isTableCard = false;
+        public Players.Player owner { get; set; }
         
         private void OnMouseDown()
         {

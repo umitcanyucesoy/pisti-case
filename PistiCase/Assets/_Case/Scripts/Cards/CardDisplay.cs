@@ -6,7 +6,6 @@ namespace _Case.Scripts.Cards
     {
         public SpriteRenderer spriteRenderer;
         public Sprite front;
-        public Sprite back;
 
         public void UpdateDisplay()
         {
