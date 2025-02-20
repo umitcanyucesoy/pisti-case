@@ -26,6 +26,8 @@ namespace _Case.Scripts.UI
         [SerializeField] private TextMeshProUGUI minBetText;          
         [SerializeField] private TextMeshProUGUI maxBetText;          
         [SerializeField] private TextMeshProUGUI lobbyMoneyText;
+        [SerializeField] private GameObject notEnoughBetPanel; // Bu panel, oyuncunun parası yetersizse gösterilecek.
+
 
         [Header("----- Button References -----")]
         [SerializeField] private Button confirmButton;              
@@ -42,8 +44,6 @@ namespace _Case.Scripts.UI
 
         private void Start()
         {
-            gameObject.SetActive(false);
-
             if (exitButton != null)
                 exitButton.onClick.AddListener(ClosePopup);
 
@@ -105,23 +105,32 @@ namespace _Case.Scripts.UI
             RoomBetRange selectedRoom = roomBetRanges[_selectedRoomIndex];
             Debug.Log($"Salon oluşturuluyor. Seçilen bahis: {selectedBet} | Salon: {selectedRoom.roomName}");
 
-            LobbyData.SelectedRoomMaxBet = selectedRoom.maxBet;   
-            LobbyData.SelectedBet = selectedBet; 
-
+            // Önce LobbyMoneyText'ten oyuncu parasını oku.
+            int playerMoney = 0;
             if (lobbyMoneyText != null)
             {
                 string moneyStr = lobbyMoneyText.text.Replace(".", "");
-                int playerMoney;
-                if (int.TryParse(moneyStr, NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out playerMoney))
-                {
-                    LobbyData.PlayerMoney = playerMoney;
-                }
-                else
+                if (!int.TryParse(moneyStr, NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out playerMoney))
                 {
                     Debug.LogWarning("Lobby money parse edilemedi: " + lobbyMoneyText.text);
                 }
             }
+            LobbyData.PlayerMoney = playerMoney;
+    
+            if (playerMoney < selectedBet)
+            {
+                Debug.Log("Oyuncunun parası seçilen bahis değerinden düşük.");
+                if (notEnoughBetPanel != null)
+                {
+                    ClosePopup();
+                    notEnoughBetPanel.SetActive(true);
+                }
+                return;
+            }
 
+            LobbyData.SelectedRoomMaxBet = selectedRoom.maxBet;
+            LobbyData.SelectedBet = selectedBet;
+    
             if (twoPlayersToggle != null && twoPlayersToggle.isOn)
             {
                 LobbyData.SelectedPlayersCount = 2;
@@ -134,7 +143,7 @@ namespace _Case.Scripts.UI
             {
                 LobbyData.SelectedPlayersCount = 2;
             }
-            
+    
             SceneManager.LoadScene("GameBoard");
             ClosePopup();
         }
