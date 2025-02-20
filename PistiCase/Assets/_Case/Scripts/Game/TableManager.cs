@@ -39,14 +39,23 @@ namespace _Case.Scripts.Game
 
         private void Start()
         {
-            if(cardManager != null && (cardManager.CardPool == null || cardManager.CardPool.Count == 0))
+            if (cardManager != null && (cardManager.CardPool == null || cardManager.CardPool.Count < 22))
             {
                 cardManager.Shuffle();
             }
-            
+    
             CreateTableCard(closedCardSlot1, botCardBackSprite, 15f);
             CreateTableCard(closedCardSlot2, botCardBackSprite, -10f);
             CreateTableCard(openCardSlot, null, 0);
+    
+            Card openCard = openCardSlot.GetComponentInChildren<Card>();
+            if (openCard != null)
+            {
+                openCard.cardDisplay.UpdateDisplay();
+                openCard.transform.localPosition = Vector3.zero;
+                openCard.transform.localRotation = Quaternion.identity;
+            }
+    
             CreateTableCard(deckSlot, botCardBackSprite, 0);
             CreateTableCard(deckSlot, botCardBackSprite, 0);
         }
@@ -101,7 +110,7 @@ namespace _Case.Scripts.Game
                 Debug.Log("Clear animasyonu devam ediyor, kart oynanamaz.");
                 return;
             }
-                    
+                            
             Card card = cardObj.GetComponent<Card>();
             if (card == null) return;
             if (card.isTableCard) return;
@@ -113,14 +122,9 @@ namespace _Case.Scripts.Game
                 if (owner == null) return;
             }
 
-            if (!owner.isBot && !TurnManager.Instance.isPlayerTurn)
+            if (TurnManager.Instance.players[TurnManager.Instance.currentPlayerIndex] != owner)
             {
-                Debug.Log("Sıra player'da değil, oynamaz.");
-                return;
-            }
-            if (owner.isBot && TurnManager.Instance.isPlayerTurn)
-            {
-                Debug.Log("Sıra bot'ta değil, oynamaz.");
+                Debug.Log("Sıra size ait değil, oynamaz.");
                 return;
             }
 
@@ -132,7 +136,6 @@ namespace _Case.Scripts.Game
 
             if (!owner.isBot)
             {
-                TurnManager.Instance.isPlayerTurn = false;
                 PlayerManager.Instance.SetPlayerHandColliders(false);
             }
             else
@@ -142,13 +145,13 @@ namespace _Case.Scripts.Game
 
             Vector3 originalWorldScale = cardObj.transform.lossyScale;
             cardObj.transform.SetParent(null, true);
-                    
+                            
             BoxCollider2D col = cardObj.GetComponent<BoxCollider2D>();
             if (col != null)
             {
                 col.enabled = false;
             }
-                    
+                            
             Sequence seq = DOTween.Sequence();
             seq.Join(
                 cardObj.transform.DOMove(openCardSlot.position, moveDuration)
@@ -181,22 +184,14 @@ namespace _Case.Scripts.Game
 
                 AddPlayedCard(card, owner);
 
-                if (!owner.isBot)
-                {
-                    TurnManager.Instance.isPlayerTurn = true;
-                    TurnManager.Instance.OnPlayerCardPlayed();
-                }
-                else
-                {
-                    TurnManager.Instance.OnBotCardFinished();
-                }
+                TurnManager.Instance.NextTurn();
             });
-        }
+}
+
             
 
         private void AddPlayedCard(Card card, Player owner)
         {
-            // Eklenen null kontrolleri
             if (card == null)
             {
                 Debug.LogWarning("AddPlayedCard => card is null!");
@@ -215,7 +210,6 @@ namespace _Case.Scripts.Game
 
             playedCards.Add(card);
 
-            // Buradan sonra null hatası almayız
             if (owner.myCards.Contains(card))
             {
                 owner.myCards.Remove(card);
@@ -225,7 +219,6 @@ namespace _Case.Scripts.Game
             Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
             Player user = PlayerManager.Instance.players.Find(p => !p.isBot);
 
-            // Ekstra null kontrolü
             if (bot == null || user == null)
             {
                 Debug.LogWarning("Bot veya user bulunamadı!");
@@ -237,18 +230,19 @@ namespace _Case.Scripts.Game
                 return;
             }
 
-            if (bot.myCards.Count == 0 && user.myCards.Count == 0)
+            bool allHandsEmpty = PlayerManager.Instance.players.TrueForAll(p => p.myCards.Count == 0);
+            if (allHandsEmpty)
             {
                 PlayerManager.Instance.GiveCard(4);
-
-                if (bot.myCards.Count == 0 && user.myCards.Count == 0)
+    
+                allHandsEmpty = PlayerManager.Instance.players.TrueForAll(p => p.myCards.Count == 0);
+                if (allHandsEmpty)
                 {
                     ResultPanelManager.Instance.ShowResult();
                     return;
                 }
             }
 
-            // Sizin 11 veya eşit atılma kontrolleriniz...
             if (playedCards.Count >= 2)
             {
                 Card lastCard = playedCards[playedCards.Count - 1];

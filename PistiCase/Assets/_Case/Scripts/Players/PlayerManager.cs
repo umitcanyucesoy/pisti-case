@@ -66,7 +66,5 @@ namespace _Case.Scripts.Players
                 }
             }
         }
-        
-
-        }
     }
+}

@@ -554,6 +554,8 @@ MonoBehaviour:
   players:
   - {fileID: 1080784833}
   - {fileID: 1309838152}
+  - {fileID: 668268089}
+  - {fileID: 255810706}
 --- !u!114 &46502046
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -568,6 +570,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   botPlayDelay: 1
   isPlayerTurn: 1
+  currentPlayerIndex: 0
+  players:
+  - {fileID: 1080784833}
+  - {fileID: 1309838152}
+  - {fileID: 668268089}
+  - {fileID: 255810706}
 --- !u!1 &216714220
 GameObject:
   m_ObjectHideFlags: 0
@@ -702,6 +710,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 216714220}
   m_CullTransparentMesh: 1
+--- !u!1 &255810705
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 255810707}
+  - component: {fileID: 255810706}
+  m_Layer: 0
+  m_Name: BotHand (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &255810706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255810705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91c1b2202e4798a0d196c4dba6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCards: []
+  spacing: 1
+  cardWidth: 1.2
+  handContainer: {fileID: 255810707}
+  scoreText: {fileID: 216714222}
+  isBot: 1
+  score: 0
+--- !u!4 &255810707
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255810705}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6, y: -3, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &327365353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1220,6 +1279,57 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &668268088
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 668268090}
+  - component: {fileID: 668268089}
+  m_Layer: 0
+  m_Name: BotHand (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &668268089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668268088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c91c1b2202e4798a0d196c4dba6ea23, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCards: []
+  spacing: 1
+  cardWidth: 1.2
+  handContainer: {fileID: 668268090}
+  scoreText: {fileID: 216714222}
+  isBot: 1
+  score: 0
+--- !u!4 &668268090
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 668268088}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.6, y: 3, z: 0}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &737916810
 GameObject:
   m_ObjectHideFlags: 0
@@ -1472,6 +1582,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 514632ecfe46463da99f14c92ca71be7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMode: 1
   closedCardSlot1: {fileID: 327365354}
   closedCardSlot2: {fileID: 1836902112}
   openCardSlot: {fileID: 1999936773}
@@ -3825,3 +3936,5 @@ SceneRoots:
   - {fileID: 785409649}
   - {fileID: 1080784832}
   - {fileID: 1309838151}
+  - {fileID: 668268090}
+  - {fileID: 255810707}

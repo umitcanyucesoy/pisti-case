@@ -568,6 +568,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   botPlayDelay: 1
   isPlayerTurn: 1
+  currentPlayerIndex: 0
+  players:
+  - {fileID: 1080784833}
+  - {fileID: 1309838152}
 --- !u!1 &216714220
 GameObject:
   m_ObjectHideFlags: 0

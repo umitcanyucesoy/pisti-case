@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Players;
 using UnityEngine;
@@ -7,7 +8,8 @@ namespace _Case.Scripts.Game
     public class TurnManager : MonoBehaviour
     {
         public float botPlayDelay = 1f;
-        public bool isPlayerTurn = true;
+        public int currentPlayerIndex = 0;
+        public List<Player> players;
 
         public static TurnManager Instance { get; private set; }
 
@@ -19,35 +21,35 @@ namespace _Case.Scripts.Game
                 Destroy(gameObject);
         }
         
-        public void OnPlayerCardPlayed()
+        public void NextTurn()
         {
-            isPlayerTurn = false;
-            Invoke(nameof(BotPlayTurn), botPlayDelay);
-        }
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.Count;
 
+            Player nextPlayer = players[currentPlayerIndex];
+            if (nextPlayer.isBot)
+            {
+                Invoke(nameof(BotPlayTurn), botPlayDelay);
+            }
+            else
+            {
+                PlayerManager.Instance.SetPlayerHandColliders(true);
+            }
+        }
+        
         private void BotPlayTurn()
         {
-            // Eğer vanish animasyonu devam ediyorsa, bot hamlesini erteleyelim.
             if (TableManager.Instance.isClearing)
             {
-                Debug.Log("Vanish animasyonu devam ediyor, bot hamlesi erteleniyor.");
                 Invoke(nameof(BotPlayTurn), botPlayDelay);
                 return;
             }
-        
-            Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
-            if (bot != null && bot.myCards.Count > 0)
+
+            Player currentPlayer = players[currentPlayerIndex];
+            if (currentPlayer != null && currentPlayer.myCards.Count > 0)
             {
-                Card botCard = bot.myCards[0];
-                // Bot hamlesini tetiklerken automated parametresini true olarak gönderiyoruz.
+                Card botCard = currentPlayer.myCards[0];
                 TableManager.Instance.PlayCard(botCard.gameObject, true);
             }
-        }
-        
-        public void OnBotCardFinished()
-        {
-            isPlayerTurn = true;
-            PlayerManager.Instance.SetPlayerHandColliders(true);
         }
     }
 }
