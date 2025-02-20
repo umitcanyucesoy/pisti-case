@@ -83,7 +83,7 @@ namespace _Case.Scripts.UI
             {
                 Debug.Log("Giriş başarılı! Salon: " + roomName);
 
-                LobbyData.SelectedRoomMaxBet = maxBet;
+                LobbyData.SelectedRoomBet = minBet;
                 LobbyData.PlayerMoney = playerMoney;
 
                 SceneManager.LoadScene("GameBoard");

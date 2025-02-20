@@ -12,10 +12,10 @@ namespace _Case.Scripts.UI
 
         private void Start()
         {
-            botMoneyText.text = LobbyData.SelectedRoomMaxBet.ToString("N0");
+            botMoneyText.text = LobbyData.SelectedRoomBet.ToString("N0");
             playerMoneyText.text = LobbyData.PlayerMoney.ToString("N0");
         
-            int betToDisplay = LobbyData.SelectedBet > 0 ? LobbyData.SelectedBet : LobbyData.SelectedRoomMaxBet;
+            int betToDisplay = LobbyData.SelectedBet > 0 ? LobbyData.SelectedBet : LobbyData.SelectedRoomBet;
             betText.text = betToDisplay.ToString("N0");
         }
     }

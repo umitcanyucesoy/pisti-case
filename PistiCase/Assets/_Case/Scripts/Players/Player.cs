@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Game;
+using TMPro;
 using UnityEngine;
 
 namespace _Case.Scripts.Players
@@ -14,6 +15,7 @@ namespace _Case.Scripts.Players
 
         [Header("----- Player Elements -----")]
         public Transform handContainer;
+        public TextMeshProUGUI scoreText;
         public bool isBot = false;
         public int score = 0;
 
@@ -39,6 +41,13 @@ namespace _Case.Scripts.Players
             }
 
             UpdateCardPositions();
+        }
+        
+        public void UpdateScoreUI()
+        {
+            // Bu örnekte, scoreText isimli bir TextMeshProUGUI referansı olduğunu varsayıyoruz.
+            if(scoreText != null)
+                scoreText.text = score.ToString();
         }
         
         private void UpdateCardPositions()

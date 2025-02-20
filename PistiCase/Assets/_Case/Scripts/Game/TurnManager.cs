@@ -27,10 +27,19 @@ namespace _Case.Scripts.Game
 
         private void BotPlayTurn()
         {
+            // Eğer vanish animasyonu devam ediyorsa, bot hamlesini erteleyelim.
+            if (TableManager.Instance.isClearing)
+            {
+                Debug.Log("Vanish animasyonu devam ediyor, bot hamlesi erteleniyor.");
+                Invoke(nameof(BotPlayTurn), botPlayDelay);
+                return;
+            }
+        
             Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
             if (bot != null && bot.myCards.Count > 0)
             {
                 Card botCard = bot.myCards[0];
+                // Bot hamlesini tetiklerken automated parametresini true olarak gönderiyoruz.
                 TableManager.Instance.PlayCard(botCard.gameObject, true);
             }
         }

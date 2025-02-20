@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardDisplay: {fileID: 2940662059569293707}
+  isTableCard: 0
 --- !u!114 &2940662059569293707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +115,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 677546013910040092}
   front: {fileID: 0}
-  back: {fileID: 0}
 --- !u!61 &3610430973249152804
 BoxCollider2D:
   m_ObjectHideFlags: 0

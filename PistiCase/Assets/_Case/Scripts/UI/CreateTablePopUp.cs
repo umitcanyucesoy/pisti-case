@@ -128,7 +128,7 @@ namespace _Case.Scripts.UI
                 return;
             }
 
-            LobbyData.SelectedRoomMaxBet = selectedRoom.maxBet;
+            LobbyData.SelectedRoomBet = selectedRoom.maxBet;
             LobbyData.SelectedBet = selectedBet;
     
             if (twoPlayersToggle != null && twoPlayersToggle.isOn)
