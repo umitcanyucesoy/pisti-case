@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Case.Scripts.Data;
 using _Case.Scripts.Extensions;
@@ -9,6 +10,12 @@ namespace _Case.Scripts.Cards
     {
         public List<Card> cardList;
         public Stack<Card> CardPool;
+
+        public static CardManager instance;
+        private void Awake()
+        {
+            instance = this;
+        }
 
         public Card GetCard(CardData data)
         {

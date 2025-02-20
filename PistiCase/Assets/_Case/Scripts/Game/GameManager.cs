@@ -1,6 +1,7 @@
 using System;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Players;
+using _Case.Scripts.UI;
 using UnityEngine;
 
 namespace _Case.Scripts.Game

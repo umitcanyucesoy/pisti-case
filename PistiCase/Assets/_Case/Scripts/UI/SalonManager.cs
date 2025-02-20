@@ -27,7 +27,8 @@ namespace _Case.Scripts.UI
         [Header("----- Insufficient Funds Popup -----")]
         [SerializeField] private GameObject insufficientFundsPopup;
         [SerializeField] private Button popupExitButton;
-
+        
+        
         private void Start()
         {
             if (playNowButton != null)
@@ -59,6 +60,24 @@ namespace _Case.Scripts.UI
 
             UpdateCurrentBetText(betSlider != null ? betSlider.value : minBet);
         }
+        
+        private void OnEnable()
+        {
+            if (LobbyData.PlayerMoney <= 0)
+            {
+                string moneyStr = moneyText.text.Replace(".", "");
+                if (int.TryParse(moneyStr, NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out int parsedValue))
+                {
+                    LobbyData.PlayerMoney = parsedValue;
+                }
+                else
+                {
+                    LobbyData.PlayerMoney = 2000;
+                }
+            }
+
+            moneyText.text = LobbyData.PlayerMoney.ToString("N0");
+        }
 
         private void UpdateCurrentBetText(float value)
         {
@@ -82,7 +101,7 @@ namespace _Case.Scripts.UI
             if (playerMoney >= minBet && playerMoney <= maxBet)
             {
                 Debug.Log("Giriş başarılı! Salon: " + roomName);
-
+                
                 LobbyData.SelectedRoomBet = minBet;
                 LobbyData.PlayerMoney = playerMoney;
 

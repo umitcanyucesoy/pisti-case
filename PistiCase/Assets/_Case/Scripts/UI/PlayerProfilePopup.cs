@@ -1,3 +1,4 @@
+using _Case.Scripts.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,6 +20,8 @@ namespace _Case.Scripts.UI
         
         public void OpenPopup()
         {
+            UpdateProfile(LobbyData.PlayerWins, LobbyData.PlayerLosses);
+
             gameObject.SetActive(true);
         }
 

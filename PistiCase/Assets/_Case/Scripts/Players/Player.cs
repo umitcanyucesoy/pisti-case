@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Game;
@@ -18,6 +19,11 @@ namespace _Case.Scripts.Players
         public TextMeshProUGUI scoreText;
         public bool isBot = false;
         public int score = 0;
+
+        private void Awake()
+        {
+            myCards = new List<Card>();
+        }
 
         public void TakeCard(Card card)
         {
@@ -45,7 +51,6 @@ namespace _Case.Scripts.Players
         
         public void UpdateScoreUI()
         {
-            // Bu örnekte, scoreText isimli bir TextMeshProUGUI referansı olduğunu varsayıyoruz.
             if(scoreText != null)
                 scoreText.text = score.ToString();
         }

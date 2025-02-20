@@ -26,7 +26,7 @@ namespace _Case.Scripts.UI
         [SerializeField] private TextMeshProUGUI minBetText;          
         [SerializeField] private TextMeshProUGUI maxBetText;          
         [SerializeField] private TextMeshProUGUI lobbyMoneyText;
-        [SerializeField] private GameObject notEnoughBetPanel; // Bu panel, oyuncunun parası yetersizse gösterilecek.
+        [SerializeField] private GameObject notEnoughBetPanel;
 
 
         [Header("----- Button References -----")]
@@ -34,6 +34,7 @@ namespace _Case.Scripts.UI
         [SerializeField] private Button exitButton;                 
 
         [Header("----- Player Count Selection -----")]
+        [SerializeField] private ToggleGroup playersToggleGroup;
         [SerializeField] private Toggle twoPlayersToggle;
         [SerializeField] private Toggle fourPlayersToggle;
 
@@ -52,6 +53,20 @@ namespace _Case.Scripts.UI
 
             if (confirmButton != null)
                 confirmButton.onClick.AddListener(OnConfirm);
+            
+            if (playersToggleGroup != null)
+            {
+                if(twoPlayersToggle)
+                    twoPlayersToggle.group = playersToggleGroup;
+                if(fourPlayersToggle)
+                    fourPlayersToggle.group = playersToggleGroup;
+            }
+            
+            if (twoPlayersToggle && fourPlayersToggle)
+            {
+                twoPlayersToggle.isOn = true;
+                fourPlayersToggle.isOn = false;
+            }
         }
         
         public void OpenPopup()
@@ -105,7 +120,6 @@ namespace _Case.Scripts.UI
             RoomBetRange selectedRoom = roomBetRanges[_selectedRoomIndex];
             Debug.Log($"Salon oluşturuluyor. Seçilen bahis: {selectedBet} | Salon: {selectedRoom.roomName}");
 
-            // Önce LobbyMoneyText'ten oyuncu parasını oku.
             int playerMoney = 0;
             if (lobbyMoneyText != null)
             {

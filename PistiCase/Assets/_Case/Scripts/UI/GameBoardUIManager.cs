@@ -14,8 +14,11 @@ namespace _Case.Scripts.UI
         {
             botMoneyText.text = LobbyData.SelectedRoomBet.ToString("N0");
             playerMoneyText.text = LobbyData.PlayerMoney.ToString("N0");
-        
-            int betToDisplay = LobbyData.SelectedBet > 0 ? LobbyData.SelectedBet : LobbyData.SelectedRoomBet;
+
+            int betToDisplay = LobbyData.SelectedBet > 0 
+                ? LobbyData.SelectedBet 
+                : LobbyData.SelectedRoomBet;
+
             betText.text = betToDisplay.ToString("N0");
         }
     }

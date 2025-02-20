@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using _Case.Scripts.Cards;
 using _Case.Scripts.Players;
+using _Case.Scripts.UI;
 using DG.Tweening;
 using UnityEngine;
 
@@ -48,17 +49,6 @@ namespace _Case.Scripts.Game
             CreateTableCard(openCardSlot, null, 0);
             CreateTableCard(deckSlot, botCardBackSprite, 0);
             CreateTableCard(deckSlot, botCardBackSprite, 0);
-        }
-
-        private void Update()
-        {
-            if (openCardSlot && !_isClearing && openCardSlot.childCount == 0)
-            {
-                if (cardManager && cardManager.CardPool.Count > 0)
-                {
-                    CreateTableCard(openCardSlot, null, 0);
-                }
-            }
         }
 
         private void CreateTableCard(Transform slot, Sprite sprite, float rotation)
@@ -206,8 +196,26 @@ namespace _Case.Scripts.Game
 
         private void AddPlayedCard(Card card, Player owner)
         {
+            // Eklenen null kontrolleri
+            if (card == null)
+            {
+                Debug.LogWarning("AddPlayedCard => card is null!");
+                return;
+            }
+            if (owner == null)
+            {
+                Debug.LogWarning($"AddPlayedCard => owner is null! Card: {card.name}");
+                return;
+            }
+            if (owner.myCards == null)
+            {
+                Debug.LogWarning($"AddPlayedCard => owner.myCards is null! Owner: {owner.name}");
+                return;
+            }
+
             playedCards.Add(card);
 
+            // Buradan sonra null hatası almayız
             if (owner.myCards.Contains(card))
             {
                 owner.myCards.Remove(card);
@@ -217,14 +225,30 @@ namespace _Case.Scripts.Game
             Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
             Player user = PlayerManager.Instance.players.Find(p => !p.isBot);
 
-            if (bot != null && user != null)
+            // Ekstra null kontrolü
+            if (bot == null || user == null)
             {
+                Debug.LogWarning("Bot veya user bulunamadı!");
+                return;
+            }
+            if (bot.myCards == null || user.myCards == null)
+            {
+                Debug.LogWarning("Bot veya user myCards listesi null! Dağıtım adımı atlanıyor.");
+                return;
+            }
+
+            if (bot.myCards.Count == 0 && user.myCards.Count == 0)
+            {
+                PlayerManager.Instance.GiveCard(4);
+
                 if (bot.myCards.Count == 0 && user.myCards.Count == 0)
                 {
-                    PlayerManager.Instance.GiveCard(4);
+                    ResultPanelManager.Instance.ShowResult();
+                    return;
                 }
             }
-    
+
+            // Sizin 11 veya eşit atılma kontrolleriniz...
             if (playedCards.Count >= 2)
             {
                 Card lastCard = playedCards[playedCards.Count - 1];
@@ -242,6 +266,7 @@ namespace _Case.Scripts.Game
                 }
             }
         }
+
 
         
         private void ClearOpenSlot(Player whoCleared)
@@ -282,6 +307,6 @@ namespace _Case.Scripts.Game
                 whoCleared.UpdateScoreUI();
             });
         }
-
+        
     } 
 }
