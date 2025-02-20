@@ -223,19 +223,16 @@ namespace _Case.Scripts.Game
                 }
             }
     
-            // En az 2 kart var ise normal match'e bakabiliriz.
             if (playedCards.Count >= 2)
             {
                 Card lastCard = playedCards[playedCards.Count - 1];
                 Card prevCard = playedCards[playedCards.Count - 2];
 
-                // 1) Eğer Vale (11) atıldıysa
                 if (lastCard.cardData.Value == 11)
                 {
                     isClearing = true;
                     ClearOpenSlot(owner);
                 }
-                // 2) Ya da son iki kart match olduysa
                 else if (lastCard.cardData.Value == prevCard.cardData.Value)
                 {
                     isClearing = true;

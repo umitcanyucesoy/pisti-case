@@ -1,4 +1,5 @@
 using System.Globalization;
+using _Case.Scripts.Data;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -81,6 +82,10 @@ namespace _Case.Scripts.UI
             if (playerMoney >= minBet && playerMoney <= maxBet)
             {
                 Debug.Log("Giriş başarılı! Salon: " + roomName);
+
+                LobbyData.SelectedRoomMaxBet = maxBet;
+                LobbyData.PlayerMoney = playerMoney;
+
                 SceneManager.LoadScene("GameBoard");
             }
             else

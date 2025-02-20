@@ -1,17 +1,20 @@
 using System.Globalization;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using _Case.Scripts.Data;  // LobbyData'nın bulunduğu namespace
 
 namespace _Case.Scripts.UI
 {
-        [System.Serializable]
-        public class RoomBetRange
-        {
-            public string roomName;  
-            public int minBet;      
-            public int maxBet;      
-        }
+    [System.Serializable]
+    public class RoomBetRange
+    {
+        public string roomName;  
+        public int minBet;      
+        public int maxBet;      
+    }
+
     public class CreateTablePopUp : MonoBehaviour
     {
         [Header("----- Room Bet Ranges -----")]
@@ -19,17 +22,24 @@ namespace _Case.Scripts.UI
 
         [Header("----- UI References -----")]
         [SerializeField] private Slider betSlider;                  
-        [SerializeField] private TextMeshProUGUI currentBetText;     
-        [SerializeField] private TextMeshProUGUI minBetText;        
-        [SerializeField] private TextMeshProUGUI maxBetText;  
+        [SerializeField] private TextMeshProUGUI currentBetText;      
+        [SerializeField] private TextMeshProUGUI minBetText;          
+        [SerializeField] private TextMeshProUGUI maxBetText;          
+        [SerializeField] private TextMeshProUGUI lobbyMoneyText;
+
+        [Header("----- Button References -----")]
         [SerializeField] private Button confirmButton;              
         [SerializeField] private Button exitButton;                 
+
+        [Header("----- Player Count Selection -----")]
+        [SerializeField] private Toggle twoPlayersToggle;
+        [SerializeField] private Toggle fourPlayersToggle;
 
         [Header("----- Salon Selection Reference -----")]
         [SerializeField] private SalonPanelSwitcher salonPanelSwitcher;
         private int _selectedRoomIndex = 0;
-        
-        
+      
+
         private void Start()
         {
             gameObject.SetActive(false);
@@ -73,6 +83,12 @@ namespace _Case.Scripts.UI
                 minBetText.text = range.minBet.ToString("N0", CultureInfo.InvariantCulture);
             if (maxBetText != null)
                 maxBetText.text = range.maxBet.ToString("N0", CultureInfo.InvariantCulture);
+            
+            if(twoPlayersToggle != null && fourPlayersToggle != null)
+            {
+                twoPlayersToggle.isOn = true;
+                fourPlayersToggle.isOn = false;
+            }
 
             gameObject.SetActive(true);
         }
@@ -88,8 +104,38 @@ namespace _Case.Scripts.UI
             int selectedBet = Mathf.RoundToInt(betSlider.value);
             RoomBetRange selectedRoom = roomBetRanges[_selectedRoomIndex];
             Debug.Log($"Salon oluşturuluyor. Seçilen bahis: {selectedBet} | Salon: {selectedRoom.roomName}");
-            // Salon oluşturma işlemlerini başlatın veya sahne geçişini gerçekleştirin.
-            // Örneğin: SceneManager.LoadScene("GameBoard");
+
+            LobbyData.SelectedRoomMaxBet = selectedRoom.maxBet;   
+            LobbyData.SelectedBet = selectedBet; 
+
+            if (lobbyMoneyText != null)
+            {
+                string moneyStr = lobbyMoneyText.text.Replace(".", "");
+                int playerMoney;
+                if (int.TryParse(moneyStr, NumberStyles.AllowThousands, CultureInfo.InvariantCulture, out playerMoney))
+                {
+                    LobbyData.PlayerMoney = playerMoney;
+                }
+                else
+                {
+                    Debug.LogWarning("Lobby money parse edilemedi: " + lobbyMoneyText.text);
+                }
+            }
+
+            if (twoPlayersToggle != null && twoPlayersToggle.isOn)
+            {
+                LobbyData.SelectedPlayersCount = 2;
+            }
+            else if (fourPlayersToggle != null && fourPlayersToggle.isOn)
+            {
+                LobbyData.SelectedPlayersCount = 4;
+            }
+            else
+            {
+                LobbyData.SelectedPlayersCount = 2;
+            }
+            
+            SceneManager.LoadScene("GameBoard");
             ClosePopup();
         }
 

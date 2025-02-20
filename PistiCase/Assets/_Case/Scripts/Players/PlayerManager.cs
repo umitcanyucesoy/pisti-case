@@ -44,14 +44,12 @@ namespace _Case.Scripts.Players
                 while (dealt < amount && cardManager.CardPool.Count > 0)
                 {
                     Card card = cardManager.CardPool.Pop();
-                    // Eğer kart table kartıysa, bu kartı dağıtımda saymadan geçiyoruz.
                     if (card.isTableCard)
                     {
                         skippedTableCards.Add(card);
                         continue;
                     }
 
-                    // Kartın aktif olduğundan emin olalım:
                     if (!card.gameObject.activeSelf)
                     {
                         card.gameObject.SetActive(true);
@@ -61,7 +59,6 @@ namespace _Case.Scripts.Players
                     dealt++;
                 }
 
-                // Dağıtım tamamlandıktan sonra, geçici listeye eklediğimiz table kartlarını desteye geri ekleyelim.
                 foreach (Card tableCard in skippedTableCards)
                 {
                     cardManager.CardPool.Push(tableCard);
