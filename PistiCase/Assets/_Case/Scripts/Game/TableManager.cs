@@ -45,6 +45,7 @@ namespace _Case.Scripts.Game
             CreateTableCard(closedCardSlot2, botCardBackSprite, -10f);
             CreateTableCard(openCardSlot, null, 0);
             CreateTableCard(deckSlot, botCardBackSprite, 0);
+            CreateTableCard(deckSlot, botCardBackSprite, 0);
         }
 
         private void Update()
@@ -221,19 +222,28 @@ namespace _Case.Scripts.Game
                     PlayerManager.Instance.GiveCard(4);
                 }
             }
-            
+    
+            // En az 2 kart var ise normal match'e bakabiliriz.
             if (playedCards.Count >= 2)
             {
                 Card lastCard = playedCards[playedCards.Count - 1];
                 Card prevCard = playedCards[playedCards.Count - 2];
-        
-                if (lastCard.cardData.Value == prevCard.cardData.Value)
+
+                // 1) Eğer Vale (11) atıldıysa
+                if (lastCard.cardData.Value == 11)
+                {
+                    isClearing = true;
+                    ClearOpenSlot(owner);
+                }
+                // 2) Ya da son iki kart match olduysa
+                else if (lastCard.cardData.Value == prevCard.cardData.Value)
                 {
                     isClearing = true;
                     ClearOpenSlot(owner);
                 }
             }
         }
+
         
         private void ClearOpenSlot(Player whoCleared)
         {
