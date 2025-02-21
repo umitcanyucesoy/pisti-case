@@ -130,7 +130,7 @@ namespace _Case.Scripts.UI
                 }
             }
             LobbyData.PlayerMoney = playerMoney;
-    
+
             if (playerMoney < selectedBet)
             {
                 Debug.Log("Oyuncunun parası seçilen bahis değerinden düşük.");
@@ -144,23 +144,26 @@ namespace _Case.Scripts.UI
 
             LobbyData.SelectedRoomBet = selectedRoom.maxBet;
             LobbyData.SelectedBet = selectedBet;
-    
+
             if (twoPlayersToggle != null && twoPlayersToggle.isOn)
             {
                 LobbyData.SelectedPlayersCount = 2;
+                SceneManager.LoadScene("GameBoard");
             }
             else if (fourPlayersToggle != null && fourPlayersToggle.isOn)
             {
                 LobbyData.SelectedPlayersCount = 4;
+                SceneManager.LoadScene("4v4GameBoard");
             }
             else
             {
                 LobbyData.SelectedPlayersCount = 2;
+                SceneManager.LoadScene("GameBoard");
             }
     
-            SceneManager.LoadScene("GameBoard");
             ClosePopup();
         }
+
 
         private void ClosePopup()
         {

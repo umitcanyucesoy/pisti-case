@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using _Case.Scripts.Cards;
+using _Case.Scripts.Game;
 using _Case.Scripts.UI;
 using UnityEngine;
 
@@ -22,10 +23,11 @@ namespace _Case.Scripts.Players
         
         public void SetPlayerHandColliders(bool enable)
         {
-            Player user = players.Find(p => !p.isBot);
-            if (user == null) return;
+            Player currentPlayer = TurnManager.Instance.players[TurnManager.Instance.currentPlayerIndex];
+            if (currentPlayer == null || currentPlayer.isBot)
+                return;
 
-            foreach (Card card in user.myCards)
+            foreach (Card card in currentPlayer.myCards)
             {
                 Collider coll = card.GetComponent<Collider>();
                 if (coll != null)

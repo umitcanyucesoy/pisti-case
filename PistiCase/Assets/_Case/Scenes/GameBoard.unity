@@ -567,7 +567,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   botPlayDelay: 1
-  isPlayerTurn: 1
   currentPlayerIndex: 0
   players:
   - {fileID: 1080784833}
@@ -1480,7 +1479,8 @@ MonoBehaviour:
   closedCardSlot2: {fileID: 1836902112}
   openCardSlot: {fileID: 1999936773}
   deckSlot: {fileID: 32324170}
-  botMatchSlot: {fileID: 962100958}
+  botMatchSlots:
+  - {fileID: 962100958}
   playerMatchSlot: {fileID: 1868197472}
   playedCards: []
   cardManager: {fileID: 46502044}
@@ -1819,7 +1819,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c67f7832c9b841be8689ccfb63944c71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  botMoneyText: {fileID: 1453496398}
+  botMoneyTexts:
+  - {fileID: 1453496398}
   playerMoneyText: {fileID: 1830291852}
   betText: {fileID: 1073620238}
 --- !u!1 &869084991
@@ -2043,7 +2044,7 @@ Transform:
   m_GameObject: {fileID: 962100957}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.01, y: 4.58, z: 0}
+  m_LocalPosition: {x: 0.01, y: 6.03, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3424,7 +3425,7 @@ Transform:
   m_GameObject: {fileID: 1868197471}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.05, y: -4.89, z: 0}
+  m_LocalPosition: {x: -0.05, y: -5.96, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children: []

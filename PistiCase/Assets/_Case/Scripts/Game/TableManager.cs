@@ -15,15 +15,15 @@ namespace _Case.Scripts.Game
         public Transform closedCardSlot2;
         public Transform openCardSlot;
         public Transform deckSlot;
-        public Transform botMatchSlot;
+        public List<Transform> botMatchSlots;
         public Transform playerMatchSlot;
 
-        [Header("----- Deck Slots -----")] 
+        [Header("----- Deck Slots -----")]
         public List<Card> playedCards;
         public CardManager cardManager;
         public Sprite botCardBackSprite;
         public float moveDuration = .5f;
-        
+
         private bool _isClearing = false;
         public bool isClearing => _isClearing;
 
@@ -35,19 +35,23 @@ namespace _Case.Scripts.Game
                 Instance = this;
             else
                 Destroy(gameObject);
+            
+            CreateTableCard(openCardSlot, null, 0);
+            CreateTableCard(openCardSlot, null, 0);
+            CreateTableCard(closedCardSlot1, botCardBackSprite, 15f);
+            CreateTableCard(closedCardSlot2, botCardBackSprite, -10f);
+            CreateTableCard(deckSlot, botCardBackSprite, 0);
         }
 
         private void Start()
         {
-            if (cardManager != null && (cardManager.CardPool == null || cardManager.CardPool.Count < 22))
-            {
-                cardManager.Shuffle();
-            }
-    
-            CreateTableCard(closedCardSlot1, botCardBackSprite, 15f);
-            CreateTableCard(closedCardSlot2, botCardBackSprite, -10f);
-            CreateTableCard(openCardSlot, null, 0);
-    
+            // 1) En az 23 kart olsun
+            EnsureAtLeast23Cards();
+
+            // 2) Masa kartlarını oluştur
+            
+
+            // Open Card
             Card openCard = openCardSlot.GetComponentInChildren<Card>();
             if (openCard != null)
             {
@@ -55,21 +59,59 @@ namespace _Case.Scripts.Game
                 openCard.transform.localPosition = Vector3.zero;
                 openCard.transform.localRotation = Quaternion.identity;
             }
-    
-            CreateTableCard(deckSlot, botCardBackSprite, 0);
-            CreateTableCard(deckSlot, botCardBackSprite, 0);
+
+            // Deck Slot'a 2 kart eklemek istediğimizi varsayıyoruz
+        }
+
+        /// <summary>
+        /// Eğer kart havuzu (CardPool) 23'ten az ise, deste/karıştırma işlemini tekrarlar.
+        /// Bu örnekte Shuffle()'ın yeni kart eklediğini varsayıyoruz.
+        /// </summary>
+        private void EnsureAtLeast23Cards()
+        {
+            if (cardManager == null)
+                return;
+
+            // CardPool null ise en azından boş bir Stack oluştur.
+            if (cardManager.CardPool == null)
+            {
+                cardManager.CardPool = new Stack<Card>();
+            }
+
+            // Eğer 23'ten azsa tekrar Shuffle() veya elinizde varsa ResetDeck() gibi bir metot çağırabilirsiniz.
+            if (cardManager.CardPool.Count < 24)
+            {
+                Debug.Log($"CardPool'da {cardManager.CardPool.Count} kart var. 23'e tamamlamak için Shuffle çağrılıyor.");
+                cardManager.Shuffle();
+            }
         }
 
         private void CreateTableCard(Transform slot, Sprite sprite, float rotation)
         {
-            if (cardManager != null && cardManager.CardPool.Count > 0 && slot != null)
+            if (cardManager == null || slot == null)
+            {
+                Debug.LogWarning("CardManager veya slot eksik.");
+                return;
+            }
+
+            // Eğer kart havuzu boşsa, yeniden karıştır.
+            if (cardManager.CardPool == null || cardManager.CardPool.Count == 0)
+            {
+                Debug.Log("CardPool boş, yeniden Shuffle yapılıyor...");
+                cardManager.Shuffle();
+            }
+
+            // Yeniden kontrol: Kart varsa devam et.
+            if (cardManager.CardPool.Count > 0)
             {
                 Card card = cardManager.CardPool.Pop();
-        
+
                 if (slot == openCardSlot)
                 {
-                    card.isTableCard = false; 
+                    // Open slot için kartın TableCard flag'ını false yapıp oynanan kartlar listesine ekliyoruz.
+                    card.isTableCard = false;
                     playedCards.Add(card);
+
                     if (card.cardDisplay != null && card.cardDisplay.spriteRenderer != null)
                     {
                         card.cardDisplay.spriteRenderer.sortingOrder = 100;
@@ -100,9 +142,13 @@ namespace _Case.Scripts.Game
                         card.cardDisplay.UpdateDisplay();
                 }
             }
+            else
+            {
+                Debug.LogWarning("Yeterli kart bulunamadı! Slot: " + slot.name);
+            }
         }
 
-        
+
         public void PlayCard(GameObject cardObj, bool automated = false)
         {
             if (_isClearing)
@@ -110,7 +156,7 @@ namespace _Case.Scripts.Game
                 Debug.Log("Clear animasyonu devam ediyor, kart oynanamaz.");
                 return;
             }
-                            
+
             Card card = cardObj.GetComponent<Card>();
             if (card == null) return;
             if (card.isTableCard) return;
@@ -145,22 +191,22 @@ namespace _Case.Scripts.Game
 
             Vector3 originalWorldScale = cardObj.transform.lossyScale;
             cardObj.transform.SetParent(null, true);
-                            
+
             BoxCollider2D col = cardObj.GetComponent<BoxCollider2D>();
             if (col != null)
             {
                 col.enabled = false;
             }
-                            
+
             Sequence seq = DOTween.Sequence();
-            seq.Join(
+            seq.Append(
                 cardObj.transform.DOMove(openCardSlot.position, moveDuration)
                     .SetEase(Ease.InOutQuad)
             );
             seq.Join(
-                cardObj.transform.DORotate(new Vector3(0, 0, 20f), moveDuration, RotateMode.Fast)
+                // Kartın rota animasyonunu, hedef açısı olan (0,0,0)'a yavaşça geçecek şekilde ayarlıyoruz.
+                cardObj.transform.DORotate(Vector3.zero, moveDuration)
                     .SetEase(Ease.InOutQuad)
-                    .SetLoops(2, LoopType.Yoyo)
             );
 
             int newOrder = 100 + playedCards.Count;
@@ -186,9 +232,7 @@ namespace _Case.Scripts.Game
 
                 TurnManager.Instance.NextTurn();
             });
-}
-
-            
+        }
 
         private void AddPlayedCard(Card card, Player owner)
         {
@@ -234,7 +278,7 @@ namespace _Case.Scripts.Game
             if (allHandsEmpty)
             {
                 PlayerManager.Instance.GiveCard(4);
-    
+
                 allHandsEmpty = PlayerManager.Instance.players.TrueForAll(p => p.myCards.Count == 0);
                 if (allHandsEmpty)
                 {
@@ -248,6 +292,7 @@ namespace _Case.Scripts.Game
                 Card lastCard = playedCards[playedCards.Count - 1];
                 Card prevCard = playedCards[playedCards.Count - 2];
 
+                // Vale (11) veya son 2 kart aynı değerse Clear
                 if (lastCard.cardData.Value == 11)
                 {
                     _isClearing = true;
@@ -261,46 +306,70 @@ namespace _Case.Scripts.Game
             }
         }
 
-
-        
         private void ClearOpenSlot(Player whoCleared)
+    {
+        int scoreIncrease = playedCards.Count * 10;
+        whoCleared.score += scoreIncrease;
+        Debug.Log($"{whoCleared.name} {playedCards.Count} kart için +{scoreIncrease} puan kazandı. Yeni skor: {whoCleared.score}");
+
+        Sequence vanishSeq = DOTween.Sequence();
+        List<Card> vanishCards = new List<Card>();
+        vanishCards.AddRange(playedCards);
+
+        Card closed1 = closedCardSlot1.GetComponentInChildren<Card>();
+        if (closed1 != null)
+            vanishCards.Add(closed1);
+        Card closed2 = closedCardSlot2.GetComponentInChildren<Card>();
+        if (closed2 != null)
+            vanishCards.Add(closed2);
+
+        // Hedef vanish alanını belirleyelim:
+        Transform targetMatchSlot = null;
+        if (whoCleared.isBot)
         {
-            int scoreIncrease = playedCards.Count * 10;
-            whoCleared.score += scoreIncrease;
-            Debug.Log($"{whoCleared.name} {playedCards.Count} kart için +{scoreIncrease} puan kazandı. Yeni skor: {whoCleared.score}");
-
-            Sequence vanishSeq = DOTween.Sequence();
-            List<Card> vanishCards = new List<Card>();
-            vanishCards.AddRange(playedCards);
-
-            Card closed1 = closedCardSlot1.GetComponentInChildren<Card>();
-            if (closed1 != null)
-                vanishCards.Add(closed1);
-            Card closed2 = closedCardSlot2.GetComponentInChildren<Card>();
-            if (closed2 != null)
-                vanishCards.Add(closed2);
-
-            Transform targetMatchSlot = whoCleared.isBot ? botMatchSlot : playerMatchSlot;
-
-            float yOffset = 0.2f;
-            for (int i = 0; i < vanishCards.Count; i++)
+            // Sadece botları filtreleyelim
+            List<Player> botPlayers = PlayerManager.Instance.players.FindAll(p => p.isBot);
+            int botIndex = botPlayers.IndexOf(whoCleared);
+            if (botMatchSlots != null && botMatchSlots.Count > botIndex && botIndex >= 0)
             {
-                Vector3 targetPosition = targetMatchSlot.position + new Vector3(0, yOffset * i, 0);
-                vanishSeq.Insert(i * 0.02f, vanishCards[i].transform.DOMove(targetPosition, .4f).SetEase(Ease.InOutQuad));
-                vanishSeq.Join(vanishCards[i].transform.DOScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f).SetEase(Ease.InOutQuad));
+                targetMatchSlot = botMatchSlots[botIndex];
             }
-
-            vanishSeq.OnComplete(() =>
+            else
             {
-                foreach (Card c in vanishCards)
-                {
-                    c.gameObject.SetActive(false);
-                }
-                playedCards.Clear();
-                _isClearing = false;
-                whoCleared.UpdateScoreUI();
-            });
+                // Eğer liste boşsa veya index uymazsa, fallback olarak ilk elemanı kullanın.
+                targetMatchSlot = botMatchSlots != null && botMatchSlots.Count > 0 ? botMatchSlots[0] : null;
+            }
         }
-        
-    } 
+        else
+        {
+            targetMatchSlot = playerMatchSlot;
+        }
+
+        if(targetMatchSlot == null)
+        {
+            Debug.LogWarning("Hedef match slot bulunamadı!");
+            return;
+        }
+
+        float yOffset = 0.2f;
+        for (int i = 0; i < vanishCards.Count; i++)
+        {
+            Vector3 targetPosition = targetMatchSlot.position + new Vector3(0, yOffset * i, 0);
+            vanishSeq.Insert(i * 0.02f, vanishCards[i].transform.DOMove(targetPosition, .4f).SetEase(Ease.InOutQuad));
+            vanishSeq.Join(vanishCards[i].transform.DOScale(new Vector3(0.2f, 0.2f, 0.2f), 0.2f).SetEase(Ease.InOutQuad));
+        }
+
+        vanishSeq.OnComplete(() =>
+        {
+            foreach (Card c in vanishCards)
+            {
+                c.gameObject.SetActive(false);
+            }
+            playedCards.Clear();
+            _isClearing = false;
+            whoCleared.UpdateScoreUI();
+        });
+    }
+
+    }
 }
