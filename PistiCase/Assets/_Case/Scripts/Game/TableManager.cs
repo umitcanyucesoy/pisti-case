@@ -41,17 +41,13 @@ namespace _Case.Scripts.Game
             CreateTableCard(closedCardSlot1, botCardBackSprite, 15f);
             CreateTableCard(closedCardSlot2, botCardBackSprite, -10f);
             CreateTableCard(deckSlot, botCardBackSprite, 0);
+            CreateTableCard(deckSlot, botCardBackSprite, 0);
         }
 
         private void Start()
         {
-            // 1) En az 23 kart olsun
             EnsureAtLeast23Cards();
 
-            // 2) Masa kartlarını oluştur
-            
-
-            // Open Card
             Card openCard = openCardSlot.GetComponentInChildren<Card>();
             if (openCard != null)
             {
@@ -59,26 +55,19 @@ namespace _Case.Scripts.Game
                 openCard.transform.localPosition = Vector3.zero;
                 openCard.transform.localRotation = Quaternion.identity;
             }
-
-            // Deck Slot'a 2 kart eklemek istediğimizi varsayıyoruz
         }
 
-        /// <summary>
-        /// Eğer kart havuzu (CardPool) 23'ten az ise, deste/karıştırma işlemini tekrarlar.
-        /// Bu örnekte Shuffle()'ın yeni kart eklediğini varsayıyoruz.
-        /// </summary>
+
         private void EnsureAtLeast23Cards()
         {
             if (cardManager == null)
                 return;
 
-            // CardPool null ise en azından boş bir Stack oluştur.
             if (cardManager.CardPool == null)
             {
                 cardManager.CardPool = new Stack<Card>();
             }
 
-            // Eğer 23'ten azsa tekrar Shuffle() veya elinizde varsa ResetDeck() gibi bir metot çağırabilirsiniz.
             if (cardManager.CardPool.Count < 24)
             {
                 Debug.Log($"CardPool'da {cardManager.CardPool.Count} kart var. 23'e tamamlamak için Shuffle çağrılıyor.");
@@ -94,21 +83,18 @@ namespace _Case.Scripts.Game
                 return;
             }
 
-            // Eğer kart havuzu boşsa, yeniden karıştır.
             if (cardManager.CardPool == null || cardManager.CardPool.Count == 0)
             {
                 Debug.Log("CardPool boş, yeniden Shuffle yapılıyor...");
                 cardManager.Shuffle();
             }
 
-            // Yeniden kontrol: Kart varsa devam et.
             if (cardManager.CardPool.Count > 0)
             {
                 Card card = cardManager.CardPool.Pop();
 
                 if (slot == openCardSlot)
                 {
-                    // Open slot için kartın TableCard flag'ını false yapıp oynanan kartlar listesine ekliyoruz.
                     card.isTableCard = false;
                     playedCards.Add(card);
 
@@ -204,7 +190,6 @@ namespace _Case.Scripts.Game
                     .SetEase(Ease.InOutQuad)
             );
             seq.Join(
-                // Kartın rota animasyonunu, hedef açısı olan (0,0,0)'a yavaşça geçecek şekilde ayarlıyoruz.
                 cardObj.transform.DORotate(Vector3.zero, moveDuration)
                     .SetEase(Ease.InOutQuad)
             );
@@ -292,7 +277,6 @@ namespace _Case.Scripts.Game
                 Card lastCard = playedCards[playedCards.Count - 1];
                 Card prevCard = playedCards[playedCards.Count - 2];
 
-                // Vale (11) veya son 2 kart aynı değerse Clear
                 if (lastCard.cardData.Value == 11)
                 {
                     _isClearing = true;
@@ -323,11 +307,9 @@ namespace _Case.Scripts.Game
         if (closed2 != null)
             vanishCards.Add(closed2);
 
-        // Hedef vanish alanını belirleyelim:
         Transform targetMatchSlot = null;
         if (whoCleared.isBot)
         {
-            // Sadece botları filtreleyelim
             List<Player> botPlayers = PlayerManager.Instance.players.FindAll(p => p.isBot);
             int botIndex = botPlayers.IndexOf(whoCleared);
             if (botMatchSlots != null && botMatchSlots.Count > botIndex && botIndex >= 0)
@@ -336,7 +318,6 @@ namespace _Case.Scripts.Game
             }
             else
             {
-                // Eğer liste boşsa veya index uymazsa, fallback olarak ilk elemanı kullanın.
                 targetMatchSlot = botMatchSlots != null && botMatchSlots.Count > 0 ? botMatchSlots[0] : null;
             }
         }

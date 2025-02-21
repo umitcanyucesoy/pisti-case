@@ -8294,6 +8294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   winText: {fileID: 1230922004}
   loseText: {fileID: 1881792197}
+  playerMoneyText: {fileID: 1389119818}
   exitButton: {fileID: 1434297555}
 --- !u!1 &1881075979
 GameObject:

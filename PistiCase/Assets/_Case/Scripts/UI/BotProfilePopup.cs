@@ -6,12 +6,12 @@ using UnityEngine.UI;
 
 namespace _Case.Scripts.UI
 {
-    public class PlayerProfilePopup : MonoBehaviour
+    public class BotProfilePopup : MonoBehaviour
     {
         [Header("----- UI References -----")]
         [SerializeField] private TextMeshProUGUI winText;  
         [SerializeField] private TextMeshProUGUI loseText;   
-        [SerializeField] private TextMeshProUGUI playerMoneyText;   
+        [SerializeField] private TextMeshProUGUI botMoneyText;   
         [SerializeField] private Button exitButton;          
 
         private void Start()
@@ -24,8 +24,8 @@ namespace _Case.Scripts.UI
         {
             UpdateProfile(LobbyData.PlayerWins, LobbyData.PlayerLosses);
             
-            if (playerMoneyText != null)
-                playerMoneyText.text = LobbyData.PlayerMoney.ToString("N0", CultureInfo.InvariantCulture);
+            if (botMoneyText != null)
+                botMoneyText.text = LobbyData.PlayerMoney.ToString("N0", CultureInfo.InvariantCulture);
             
             gameObject.SetActive(true);
         }

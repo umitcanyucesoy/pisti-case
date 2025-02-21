@@ -36,7 +36,6 @@ namespace _Case.Scripts.UI
         
         public void ShowResult()
         {
-            // Oyuncuyu buluyoruz
             Player player = PlayerManager.Instance.players.Find(p => !p.isBot);
             if (player == null) return;
             
@@ -44,7 +43,6 @@ namespace _Case.Scripts.UI
             
             if (LobbyData.SelectedPlayersCount == 2)
             {
-                // 1v1 senaryosu: tek bot ile karşılaştırma
                 Player bot = PlayerManager.Instance.players.Find(p => p.isBot);
                 if (bot == null) return;
                 
@@ -115,7 +113,6 @@ namespace _Case.Scripts.UI
         
         private void OnBackToLobby()
         {
-            // Lobby sahnesine geçişte, SalonManager LobbyData.PlayerMoney değerini güncel olarak gösterecektir.
             SceneManager.LoadScene("Lobby");
         }
     }
